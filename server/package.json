@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "vercel-build": "echo hello"
   },
   "dependencies": {
     "cors": "2.8.5",
