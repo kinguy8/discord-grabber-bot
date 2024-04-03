@@ -1,2 +1,2 @@
-// export { taskSchema } from './Task';
-// export { Task } from './interfaces';
+export { taskSchema } from './Task';
+export { Task } from './interfaces';

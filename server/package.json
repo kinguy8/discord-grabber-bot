@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "vercel-build": "echo hello from vercel"
@@ -10,7 +11,7 @@
     "express": "4.19.0",
     "http-status-codes": "2.3.0",
     "mongodb": "6.5.0",
-    "mongoose": "8.2.4",
+    "mongoose": "^6.10.1",
     "vercel": "33.6.2"
   },
   "devDependencies": {
