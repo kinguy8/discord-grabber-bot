@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { taskController } from './controllers/Task';
-import { connectDB } from './mongoose';
+// import { connectDB } from './mongoose';
 
 
-connectDB();
+// connectDB();
 
 const router = Router();
 router.route('/task').post(taskController.createTask);
