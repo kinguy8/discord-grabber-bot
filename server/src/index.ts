@@ -18,10 +18,10 @@ dotenv.config();
 
 const app: Express = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-//@ts-ignore
-// app.use('/api/v1', router);
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// //@ts-ignore
+// // app.use('/api/v1', router);
 
 const port = process.env.PORT || 3000;
 
@@ -35,5 +35,7 @@ app.get('/test', (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+
+export default app;
 
 
