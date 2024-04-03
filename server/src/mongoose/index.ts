@@ -1,12 +1,10 @@
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
-export const connectDB = async (callback: () => void) => {
+export const connectDB = async () => {
   try {
     console.log('Try to connect to database');
-    const client = new MongoClient((process.env.MONGODB_URI as string) ?? '');
-    await client.connect();
+    await mongoose.connect((process.env.MONGODB_URI as string));
     console.log('connected...');
-    callback();
   } catch (e) {
     console.log('e', e);
   }

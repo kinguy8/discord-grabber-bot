@@ -6,6 +6,9 @@ dotenv.config();
 import { taskController } from './controllers/Task';
 import { connectDB } from './mongoose';
 
+
+connectDB();
+
 const router = Router();
 router.route('/task').post(taskController.createTask);
 router.route('/tasks').get(taskController.getTasks);
@@ -29,9 +32,9 @@ app.get('/test', (req: Request, res: Response) => {
   res.send('Page is work');
 });
 
-connectDB(() => app.listen(port, () => {
+app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
-}));
+});
 
 
 export default app;
