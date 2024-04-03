@@ -3,25 +3,25 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import { taskController } from './controllers/Task';
+// import { taskController } from './controllers/Task';
 // import { connectDB } from './mongoose';
 
 
 // connectDB();
 
-const router = Router();
-router.route('/task').post(taskController.createTask);
-router.route('/tasks').get(taskController.getTasks);
-router.route('/task/delete').post(taskController.deleteTask);
-router.route('/task/deactivate').post(taskController.deactivateTask);
-router.route('/task/activate').post(taskController.activateTask);
+// const router = Router();
+// router.route('/task').post(taskController.createTask);
+// router.route('/tasks').get(taskController.getTasks);
+// router.route('/task/delete').post(taskController.deleteTask);
+// router.route('/task/deactivate').post(taskController.deactivateTask);
+// router.route('/task/activate').post(taskController.activateTask);
 
 const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //@ts-ignore
-app.use('/api/v1', router);
+// app.use('/api/v1', router);
 
 const port = process.env.PORT || 3000;
 
