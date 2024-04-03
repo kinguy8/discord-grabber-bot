@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "vercel-build": "echo hello"
+    "vercel-build": "echo hello from vercel"
   },
   "dependencies": {
     "cors": "2.8.5",
@@ -10,8 +10,7 @@
     "express": "4.19.0",
     "http-status-codes": "2.3.0",
     "mongodb": "6.5.0",
-    "mongoose": "8.2.4",
-    "vercel": "^33.6.2"
+    "vercel": "33.6.2"
   },
   "devDependencies": {
     "@types/cors": "2.8.17",
