@@ -22,6 +22,8 @@ app.use('/api/v1', router);
 
 const port = process.env.PORT || 3000;
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 app.get('/test', (req: Request, res: Response) => {
   console.log('it works');
   res.send('Page is work');
@@ -32,3 +34,5 @@ connectDB(() =>
     console.log(`[server]: Server is running at http://localhost:${port}`);
   }),
 );
+
+export default app;
