@@ -193,7 +193,7 @@ client.on('ready', async (client) => {
   // startPollingMessages('2', stateMachine, sendMessage, process.env.USER_TOKEN, tasksMessages);
 });
 
-export const main = async () => {
+const main = async () => {
   try {
     console.log('try to connect');
     await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID as string, process.env.GUILD_ID as string), {
@@ -207,4 +207,4 @@ export const main = async () => {
   }
 };
 
-main();
+export default main;
