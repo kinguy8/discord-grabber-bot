@@ -33,7 +33,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
   if (interaction.isCommand()) {
     const { commandName, user } = interaction;
 
-    console.log('commandName is ', commandName);
+    console.log('commandName ===== ', commandName);
 
     if (user.id !== process.env.ACCESS_USER_ID) {
       await interaction.reply({ content: 'Доступ запрещен' });
@@ -98,7 +98,11 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
 
       messages.forEach((mes, idx) => {
         //@ts-ignore
-        client.channels.cache.get(process.env.CHANNEL_ID_STORE).send({ embeds: [mes], components: [components[idx]] });
+        await client.channels.cache
+          //@ts-ignore
+          .get(process.env.CHANNEL_ID_STORE)
+          //@ts-ignore
+          .send({ embeds: [mes], components: [components[idx]] });
       });
 
       await interaction.reply({ content: 'Список получен' });
@@ -121,7 +125,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
           .setColor(0x0099ff)
           .setTitle(response.name)
           .setImage(`https://cdn.discordapp.com/icons/${server}/${response.icon}.png`);
-        interaction.reply({
+        await interaction.reply({
           embeds: [exampleEmbed],
           content: `Вы ввели адрес сервера ${server} и канал ${channel}`,
           components: [
@@ -144,7 +148,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
     if (interaction.customId === 'agree') {
       const task = await addTask(stateMachine, `задание ${Math.floor(Math.random() * 99999)}`, finallyCallback);
       if (task.task.name) {
-        interaction.reply({ content: 'Задача создана' });
+        await interaction.reply({ content: 'Задача создана' });
       }
     }
 
@@ -159,7 +163,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
         const response = await deactivateTask(id, finallyCallback);
         if (response) {
           //@ts-ignore
-          client.channels.cache
+          await client.channels.cache
             .get(process.env.CHANNEL_ID_STORE as string)
             //@ts-ignore
             .send('Задача диактивирована (Все задачи были приостановлены, воспользуйтесь командой /start)');
@@ -199,7 +203,7 @@ client.on('ready', async (client) => {
   let tasksMessages = {};
   const sendMessage = (message: any) => {
     //@ts-ignore
-    client.channels.cache.get(process.env.CHANNEL_ID_STORE).send(message);
+    await client.channels.cache.get(process.env.CHANNEL_ID_STORE).send(message);
   };
 
   startPollingMessages('2', stateMachine, sendMessage, process.env.USER_TOKEN, tasksMessages);
