@@ -59,6 +59,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
       for (let taskIdx = 0; taskIdx < stateMachine.tasks.length; taskIdx++) {
         const task = stateMachine.tasks[taskIdx];
         if (task.name) {
+          //@ts-ignore
           promises.push(task.channelId);
           //const response = await getGuildData(task.serverId);
         }
