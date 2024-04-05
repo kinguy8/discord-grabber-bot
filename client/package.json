@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "build": "npx tsc",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "vercel-build": "echo hello from vercel"
   },
   "dependencies": {
     "date-fns": "3.6.0",
