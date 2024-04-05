@@ -36,23 +36,23 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
     console.log('commandName is ', commandName);
 
     if (user.id !== process.env.ACCESS_USER_ID) {
-      interaction.reply({ content: 'Доступ запрещен' });
+      await interaction.reply({ content: 'Доступ запрещен' });
       return;
     }
 
     if (commandName === SLASH_COMMANDS.START) {
       if (!stateMachine.tasks.length) {
-        interaction.reply({ content: 'Список задач пуск. Создайте задачу с помощью команды /task' });
+        await interaction.reply({ content: 'Список задач пуск. Создайте задачу с помощью команды /task' });
       } else {
         startTasks(stateMachine);
         stateMachine.taskIsActive = true;
-        interaction.reply({ content: 'Задачи запущены' });
+        await interaction.reply({ content: 'Задачи запущены' });
       }
     }
 
     if (commandName === SLASH_COMMANDS.STOP) {
       stopTasks(stateMachine, () => console.log('stop!'));
-      interaction.reply({ content: 'Выполнение задач остановлено, для запуска отправьте команду - /start' });
+      await interaction.reply({ content: 'Выполнение задач остановлено, для запуска отправьте команду - /start' });
     }
 
     if (commandName === SLASH_COMMANDS.TASK_LIST) {
@@ -101,7 +101,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
         client.channels.cache.get(process.env.CHANNEL_ID_STORE).send({ embeds: [mes], components: [components[idx]] });
       });
 
-      interaction.reply({ content: 'Список получен' });
+      await interaction.reply({ content: 'Список получен' });
     }
 
     if (commandName === SLASH_COMMANDS.TASK) {
@@ -110,7 +110,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
       const response = await getGuildData(server);
 
       if (channel === process.env.CHANNEL_ID_STORE) {
-        interaction.reply({ content: 'Невозможно подписаться на канал, куда будут отправлены сообщения' });
+        await interaction.reply({ content: 'Невозможно подписаться на канал, куда будут отправлены сообщения' });
         return;
       }
 
@@ -135,7 +135,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
       }
 
       if (!response) {
-        interaction.reply({ content: 'Ничего не найдено' });
+        await interaction.reply({ content: 'Ничего не найдено' });
       }
     }
   }
@@ -149,7 +149,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
     }
 
     if (interaction.customId === 'disagree') {
-      interaction.reply({ content: 'Попробуйте заново' });
+      await interaction.reply({ content: 'Попробуйте заново' });
     }
 
     if (interaction.customId.toString().includes('_')) {
@@ -169,22 +169,22 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
       if (type === 'active') {
         const response = await activateTask(id, finallyCallback);
         if (response) {
-          interaction.reply({
+          await interaction.reply({
             content: 'Задача снова активна (Все задачи были приостановлены, воспользуйтесь командой /start)',
           });
         } else {
-          interaction.reply({ content: 'Что-то пошло не так' });
+          await interaction.reply({ content: 'Что-то пошло не так' });
         }
       }
 
       if (type === 'delete') {
         const response = await deleteTask(id, finallyCallback);
         if (response) {
-          interaction.reply({
+          await interaction.reply({
             content: 'Задача удалена (Все задачи были приостановлены, воспользуйтесь командой /start)',
           });
         } else {
-          interaction.reply({ content: 'Что-то пошло не так' });
+          await interaction.reply({ content: 'Что-то пошло не так' });
         }
       }
     }
