@@ -2,4 +2,5 @@
 /.env
 /dist
 /.vercel
+/.idea
 .vercel
