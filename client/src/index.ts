@@ -190,18 +190,16 @@ client.on('ready', async (client) => {
     client.channels.cache.get(process.env.GUILD_ID_STORE).send(message);
   };
 
-  // startPollingMessages('2', stateMachine, sendMessage, process.env.USER_TOKEN, tasksMessages);
+  startPollingMessages('2', stateMachine, sendMessage, process.env.USER_TOKEN, tasksMessages);
 });
 
 export const main = async () => {
   try {
-    console.log('try to connect');
     await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID as string, process.env.GUILD_ID as string), {
       body: COMMANDS,
     });
 
     client.login(process.env.BOT_TOKEN);
-    console.log('after login');
   } catch (e) {
     console.log('e', e);
   }
