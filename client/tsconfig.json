@@ -9,5 +9,10 @@
     "resolveJsonModule": true,
     "outDir": "./dist"
   },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
   "include": ["./api/*.ts", "src/**/*.ts"]
 }
