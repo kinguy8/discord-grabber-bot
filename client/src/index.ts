@@ -98,11 +98,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
 
       messages.forEach((mes, idx) => {
         //@ts-ignore
-        await client.channels.cache
-          //@ts-ignore
-          .get(process.env.CHANNEL_ID_STORE)
-          //@ts-ignore
-          .send({ embeds: [mes], components: [components[idx]] });
+        client.channels.cache.get(process.env.CHANNEL_ID_STORE).send({ embeds: [mes], components: [components[idx]] });
       });
 
       await interaction.reply({ content: 'Список получен' });
@@ -163,7 +159,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
         const response = await deactivateTask(id, finallyCallback);
         if (response) {
           //@ts-ignore
-          await client.channels.cache
+          client.channels.cache
             .get(process.env.CHANNEL_ID_STORE as string)
             //@ts-ignore
             .send('Задача диактивирована (Все задачи были приостановлены, воспользуйтесь командой /start)');
@@ -203,7 +199,7 @@ client.on('ready', async (client) => {
   let tasksMessages = {};
   const sendMessage = (message: any) => {
     //@ts-ignore
-    await client.channels.cache.get(process.env.CHANNEL_ID_STORE).send(message);
+    client.channels.cache.get(process.env.CHANNEL_ID_STORE).send(message);
   };
 
   startPollingMessages('2', stateMachine, sendMessage, process.env.USER_TOKEN, tasksMessages);
