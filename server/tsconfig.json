@@ -19,8 +19,5 @@
       "module": "CommonJS"
     }
   },
-  "include": [
-    "./api/*.ts",
-    "src/**/*.ts",
-  ]
+  "include": ["src/**/*.ts"]
 }

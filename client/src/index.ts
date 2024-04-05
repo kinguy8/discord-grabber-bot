@@ -56,27 +56,30 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
     }
 
     if (commandName === SLASH_COMMANDS.TASK_LIST) {
-      let promises = [];
+      let promises: { channelId: string; serverId: string }[] = [];
 
       for (let taskIdx = 0; taskIdx < stateMachine.tasks.length; taskIdx++) {
         const task = stateMachine.tasks[taskIdx];
         if (task.name) {
           //@ts-ignore
-          promises.push(task.channelId);
+          promises.push({ channelId: task.channelId, serverId: task.serverId });
           //const response = await getGuildData(task.serverId);
         }
       }
-      const allData = await Promise.all(promises.map((id) => getChannelData(id)));
 
-      const messages = allData.map((data, idx) =>
+      const serverData = await Promise.all(promises.map(({ serverId }) => getGuildData(serverId)));
+
+      const channelData = await Promise.all(promises.map(({ channelId }) => getChannelData(channelId)));
+
+      const messages = serverData.map((server, idx) =>
         new EmbedBuilder().setTitle(
-          `Задача - ${stateMachine.tasks[idx].name}, подписанная на канал ${data.name}, в статусе "${
-            stateMachine.tasks[idx].isActive ? 'запущена' : 'остановлена'
-          }"`,
+          `Задача - ${stateMachine.tasks[idx].name}, подписанная сервер ${server.name} (канал ${
+            channelData[idx].name
+          }), в статусе "${stateMachine.tasks[idx].isActive ? 'запущена' : 'остановлена'}"`,
         ),
       );
 
-      const components = allData.map((_, idx) =>
+      const components = serverData.map((_, idx) =>
         new ActionRowBuilder().setComponents(
           new ButtonBuilder()
             .setCustomId(
@@ -95,7 +98,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
 
       messages.forEach((mes, idx) => {
         //@ts-ignore
-        client.channels.cache.get(process.env.MAIN_GUILD_ID).send({ embeds: [mes], components: [components[idx]] });
+        client.channels.cache.get(process.env.CHANNEL_ID_STORE).send({ embeds: [mes], components: [components[idx]] });
       });
 
       interaction.reply({ content: 'Список получен' });
@@ -105,6 +108,11 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
       const server = interaction.options.get('server')?.value?.toString() ?? '';
       const channel = interaction.options.get('channel')?.value?.toString() ?? '';
       const response = await getGuildData(server);
+
+      if (channel === process.env.CHANNEL_ID_STORE) {
+        interaction.reply({ content: 'Невозможно подписаться на канал, куда будут отправлены сообщения' });
+        return;
+      }
 
       if (response) {
         stateMachine.serverId = server;
@@ -140,6 +148,10 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
       }
     }
 
+    if (interaction.customId === 'disagree') {
+      interaction.reply({ content: 'Попробуйте заново' });
+    }
+
     if (interaction.customId.toString().includes('_')) {
       const [type, id] = interaction.customId.toString().split('_');
 
@@ -148,7 +160,7 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
         if (response) {
           //@ts-ignore
           client.channels.cache
-            .get(process.env.MAIN_GUILD_ID as string)
+            .get(process.env.CHANNEL_ID_STORE as string)
             //@ts-ignore
             .send('Задача диактивирована (Все задачи были приостановлены, воспользуйтесь командой /start)');
         }
@@ -187,18 +199,20 @@ client.on('ready', async (client) => {
   let tasksMessages = {};
   const sendMessage = (message: any) => {
     //@ts-ignore
-    client.channels.cache.get(process.env.GUILD_ID_STORE).send(message);
+    client.channels.cache.get(process.env.CHANNEL_ID_STORE).send(message);
   };
 
   startPollingMessages('2', stateMachine, sendMessage, process.env.USER_TOKEN, tasksMessages);
 });
 
-export const main = async () => {
+const main = async () => {
   try {
-    await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID as string, process.env.GUILD_ID as string), {
-      body: COMMANDS,
-    });
-
+    await rest.put(
+      Routes.applicationGuildCommands(process.env.APPLICATION_ID as string, process.env.GUILD_ID as string),
+      {
+        body: COMMANDS,
+      },
+    );
     client.login(process.env.BOT_TOKEN);
   } catch (e) {
     console.log('e', e);

@@ -23,12 +23,21 @@ class TaskController {
   deleteTask = async (req: Request, res: Response) => {
     const { id } = req.body;
 
+    console.log('id is ==== ', id);
+
     if (!id) {
       res.status(StatusCodes.BAD_REQUEST).json({ msg: 'Не передан id' });
     }
 
-    await TaskModel.deleteOne({ _id: id });
-    res.status(StatusCodes.OK).json({ task: id.toString(), msg: 'Task was deleted' });
+    try {
+      console.log('before fetching');
+      const result = await TaskModel.findById(id);
+      console.log('result ', result);
+      await TaskModel.deleteOne({ _id: id });
+      res.status(StatusCodes.OK).json({ task: id.toString(), msg: 'Task was deleted' });
+    } catch (e) {
+      console.log('error is ', e);
+    }
   };
 
   deactivateTask = async (req: Request, res: Response) => {
