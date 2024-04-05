@@ -33,6 +33,8 @@ client.on('interactionCreate', async (interaction: Interaction<CacheType>) => {
   if (interaction.isCommand()) {
     const { commandName, user } = interaction;
 
+    console.log('commandName is ', commandName);
+
     if (user.id !== process.env.ACCESS_USER_ID) {
       interaction.reply({ content: 'Доступ запрещен' });
       return;
