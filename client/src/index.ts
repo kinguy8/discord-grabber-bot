@@ -202,5 +202,3 @@ export const main = async () => {
     console.log('e', e);
   }
 };
-
-main();
