@@ -28,6 +28,9 @@ export const taskSchema = new Schema<Task>(
     description: {
       type: String,
     },
+    channelName: {
+      type: String,
+    },
   },
   { timestamps: true },
 );

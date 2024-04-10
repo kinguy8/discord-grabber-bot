@@ -5,4 +5,5 @@ export interface Task {
   channelId: string;
   serverId: string;
   description?: string;
+  channelName: string;
 }
